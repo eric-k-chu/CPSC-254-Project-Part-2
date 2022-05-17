@@ -230,6 +230,7 @@ void save_notepad(std::string file, std::vector<Entry*>& notepad)
 
 
 // this function imports a notepad from a local file
+
 void import_notepad(std::vector<Entry*>& notepad)
 {
   std::ifstream import;
@@ -239,22 +240,28 @@ void import_notepad(std::vector<Entry*>& notepad)
   std::cout << "\nName of file: ";
   std::cin >> file;
   import.open(file);
-
-  // the file's contents are imported line by line
-  while (true)
-  {
-    std::getline(import, imported_header);
-    std::getline(import, imported_body);
-    std::getline(import, empty_space);
-
-    // stops adding entries when it reaches the end of the file
-    if (import.eof()) break;
-
-    Entry* imported_entry = new Entry(imported_header, imported_body);
-    notepad.push_back(imported_entry);
+  
+  if(!import)
+  {	  
+	  std::cout << "\nFile could not be found.\n";
+	  changelog_writer("Notepad import Error", "CODE 404");
   }
+  else {
+	// the file's contents are imported line by line
+	  while (true)
+	  {
+		  std::getline(import, imported_header);
+		  std::getline(import, imported_body);
+		  std::getline(import, empty_space);
 
+		  // stops adding entries when it reaches the end of the file
+		  if (import.eof()) break;
+
+		  Entry* imported_entry = new Entry(imported_header, imported_body);
+		  notepad.push_back(imported_entry);
+	  }
+	  std::cout << "\nNotepad imported from " << file << "\n";
+	  changelog_writer("Notepad import", "File named " + file + " imported");
+  }
   import.close();
-  std::cout << "\nNotepad imported from " << file << "\n";
-  changelog_writer("Notepad import", "File named " + file + " imported");
 }
