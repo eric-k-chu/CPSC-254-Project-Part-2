@@ -119,91 +119,108 @@ Entry* new_entry()
 // this function displays a single entry and its options
 void entry_view(std::vector<Entry*>& notepad, unsigned entry_spot)
 {
-  unsigned selection;
-  std::string edit;
+    std::string selection;
+    std::string edit;
 
 
-  // from here, the user can edit the entry, delete it, or return to main menu
-  do
-  {
-    std::cout << "\nEntry " << entry_spot << ":\n"
-              << notepad[entry_spot - 1]->get_header() << "\n"
-              << notepad[entry_spot - 1]->get_body() << "\n"
-              << "\n(type in a number to selection an option)\n"
-              << "1. Edit header\n"
-              << "2. Edit body\n"
-              << "3. Delete entry\n"
-              << "0. Return to notepad\n";
-    std::cin >> selection;
-    std::cin.ignore();
-
-    switch (selection)
+    // from here, the user can edit the entry, delete it, or return to main menu
+    do
     {
-      case 0:
-        break;
-      case 1:
-        // user edits header
-        std::cout << "new header: ";
-        getline(std::cin, edit);
-        changelog_writer("Entry edit", "changed header of " +
-                          notepad[entry_spot - 1]->get_header());
-        notepad[entry_spot -1]->set_header(edit);
-        break;
-      case 2:
-        // user edits body
-        std::cout << "new body: ";
-        getline(std::cin, edit);
-        changelog_writer("Entry edit", "changed body of " +
-                          notepad[entry_spot - 1]->get_header());
-        notepad[entry_spot -1]->set_body(edit);
-        break;
-      case 3:
-        // user deletes entry
-        changelog_writer("Entry deletion",
-                          notepad[entry_spot - 1]->get_header() + " deleted");
-        notepad.erase(notepad.begin() + entry_spot - 1);
-        return;
-      default:
-        std::cout << "\n";
+        std::cout << "\nEntry " << entry_spot << ":\n"
+            << notepad[entry_spot - 1]->get_header() << "\n"
+            << notepad[entry_spot - 1]->get_body() << "\n"
+            << "\n(type in a number to selection an option)\n"
+            << "1. Edit header\n"
+            << "2. Edit body\n"
+            << "3. Delete entry\n"
+            << "e. Return to notepad\n";
+        std::cin >> selection;
+        std::cin.ignore();
+
+
+        if (selection == "e") {
+            break;
+        }
+        else if (selection == "1") {
+            // user edits header
+            std::cout << "new header: ";
+            getline(std::cin, edit);
+            changelog_writer("Entry edit", "changed header of " +
+                notepad[entry_spot - 1]->get_header());
+            notepad[entry_spot - 1]->set_header(edit);
+            break;
+        }
+        else if (selection == "2") {
+            // user edits body
+            std::cout << "new body: ";
+            getline(std::cin, edit);
+            changelog_writer("Entry edit", "changed body of " +
+                notepad[entry_spot - 1]->get_header());
+            notepad[entry_spot - 1]->set_body(edit);
+            break;
+        }
+        else if (selection == "3") {
+            // user deletes entry
+            changelog_writer("Entry deletion",
+                notepad[entry_spot - 1]->get_header() + " deleted");
+            notepad.erase(notepad.begin() + entry_spot - 1);
+            return;
+        }
+        else {
+            std::cout << "\n";
+        }
+
+    } while (selection != "e");
+    return;
+}
+
+bool isNumber(std::string str)
+{
+    for (char const& c : str) {
+        if (std::isdigit(c) == 0) return false;
     }
-  } while (selection != 0);
-  return;
+    return true;
 }
 
 // this function displays the list of entries in the notepad
 void notepad_view(std::vector<Entry*>& notepad)
 {
-  int selection;
+    std::string selection;
 
-  do
-  {
-    std::cout << "\nNotepad Entries:\n"
-              << "(type in a number to selection an option)\n";
+    do
+    {
+        std::cout << "\nNotepad Entries:\n"
+            << "(type in a number to selection an option)\n";
 
-    for (unsigned i = 0; i < notepad.size(); i++)
-    {
-      std::cout <<  i + 1 << ": "<< notepad[i]->get_header() << "\n";
-    }
-    std::cout << "-1: sort notepad\n";
-    std::cout << "0: Return to main menu\n";
+        for (unsigned i = 0; i < notepad.size(); i++)
+        {
+            std::cout << i + 1 << ": " << notepad[i]->get_header() << "\n";
+        }
+        std::cout << "s: sort notepad\n";
+        std::cout << "e: Return to main menu\n";
 
-    // the user can select a specific entry to view
-    std::cin >> selection;
-    if (selection == -1)
-    {
-      // the user can sort the notepad in alphabetical order
-      quick_sort(notepad, 0, notepad.size() - 1);
-      //selection_sort(notepad);
-    } else if (selection >= 1 && selection <= notepad.size())
-    {
-      entry_view(notepad, selection);
-    } else if (selection > notepad.size() || selection < -1)
-    {
-      std::cout << "\n";
-    }
+        // the user can select a specific entry to view
+        std::cin >> selection;
+        if (selection == "s")
+        {
+            // the user can sort the notepad in alphabetical order
+            quick_sort(notepad, 0, notepad.size() - 1);
+            //selection_sort(notepad);
+        }
+        else if (isNumber(selection))
+        {
+            if (std::stoi(selection) >= 1 && std::stoi(selection) <= notepad.size()) {
+                entry_view(notepad, std::stoi(selection));
+            }
+            else if (std::stoi(selection) > notepad.size() || std::stoi(selection) < -1)
+            {
+                std::cout << "\n";
+            }
 
-  } while (selection != 0);
-  return;
+        }
+
+    } while (selection != "e");
+    return;
 }
 
 // this function saves a notepad onto a local file

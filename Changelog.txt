@@ -1,0 +1,5 @@
+Entry addition: hi added
+Entry edit: changed header of hi
+Entry edit: changed body of hi2
+Entry deletion: hi2 deleted
+autosave: autosave file updated 
