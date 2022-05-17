@@ -23,9 +23,9 @@ void Test_Save(){
 		std::cout << "\nError File " << file << " does not exist exists\n";
 	}
 	if(is_file_exist(file2)){
-		std::cout << "\nFile " << file << " exists\n";
+		std::cout << "\nFile " << file2 << " exists\n";
 	}else{
-		std::cout << "\nError File " << file << " does not exist exists\n";
+		std::cout << "\nError: File " << file2 << " does not exist\n";
 	}
 }
 
@@ -44,9 +44,9 @@ void Test_Changelog_Writer(){
 		}
 	}
 	if(test_string_1+": "+test_string_2==prevline){
-		std::cout << "Changelog works\n";
+		std::cout << "\nChangelog works\n";
 	}else{
-		std::cout << "Changelog Errors\n";
+		std::cout << "\nChangelog Errors\n";
 	}
 	
 }
