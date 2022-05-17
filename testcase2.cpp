@@ -22,6 +22,11 @@ void Test_Save(){
 	}else{
 		std::cout << "\nError File " << file << " does not exist exists\n";
 	}
+	if(is_file_exist(file2)){
+		std::cout << "\nFile " << file << " exists\n";
+	}else{
+		std::cout << "\nError File " << file << " does not exist exists\n";
+	}
 }
 
 void Test_Changelog_Writer(){
