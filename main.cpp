@@ -26,7 +26,7 @@ Last modified by: Ares Hamilton
 int main()
 {
   Entry* written_entry;
-  unsigned selection;
+  std::string selection;
   std::string file;
   std::vector<Entry*> notepad;
 
@@ -42,45 +42,50 @@ int main()
               << "3: Save notepad\n"
               << "4: Import notepad file\n"
               << "5: View changelog\n"
-              << "0: Close program\n";
+              << "e: Close program\n";
 
     std::cin >> selection;
     // this instruction allows user inputs to work properly
     std::cin.ignore();
 
-    switch (selection)
-    {
-      case 0:
-        break;
-      case 1:
+    if (selection == "e") {
+        continue;
+    }
+    else if (selection == "1") {
         // user adds an entry
         written_entry = new_entry();
         notepad.push_back(written_entry);
-        changelog_writer("Entry addition",
-                          written_entry->get_header() + " added");
-        break;
-      case 2:
+        changelog_writer("Entry addition", written_entry->get_header() + " added");
+        continue;
+    }
+    else if (selection == "2") {
         // user views notepad
         notepad_view(notepad);
-        break;
-      case 3:
+        continue;
+    }
+    else if (selection == "3") {
         // user saves notepad to file
         std::cout << "\nName of file: ";
         std::cin >> file;
         changelog_writer("Notepad save", "File named " + file + " saved");
         save_notepad(file, notepad);
-        break;
-      case 4:
+        continue;
+    }
+    else if (selection == "4") {
         // user imports notepad from file
         import_notepad(notepad);
-        break;
-      case 5:
+        continue;
+    }
+    else if (selection == "5") {
         // user views changelog;
         changelog_reader();
-      default:
+    }
+    else {
         std::cout << "\n";
     }
-  } while (selection != 0);
+  } while (selection != "e");
+
+    
 
 
   // notepad is autosaved, even if the user did not save
