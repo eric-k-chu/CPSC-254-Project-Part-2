@@ -241,7 +241,7 @@ void import_notepad(std::vector<Entry*>& notepad)
   std::cin >> file;
   import.open(file);
   
-  if(!import)
+  if(!import.good())
   {	  
 	  std::cout << "\nFile could not be found.\n";
 	  changelog_writer("Notepad import Error", "CODE 404");
